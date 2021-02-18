@@ -1,12 +1,17 @@
+# This script takes outputs of proteins identified in InterProScan and filters out proteins of interest. 
+# List of proteins of interest can be changed with the true and false HK and RR lists. 
+# Can be generalized to just be true and false lists for any proteins, not specifically only HKs and RRs. 
+
 import csv
 import collections
 import os
 import re
 
-# Change working directory to 
+# Change working directory path 
 os.chdir("/Users/annelisegoldman/Documents/TCS Mining Project/DeMMO1 Outputs")
 
-# Input files for InterProScan results, true and false HK and RR lists. All files should be in .tsv format.
+# Input file paths for InterProScan results (this is just the first file in the working directory), 
+# true and false HK and RR lists. All files should be in .tsv format.
 IPRresults = "/Users/annelisegoldman/Documents/TCS Mining Project/DeMMO1 Outputs/orf_DeMMO1_1.fa.tsv"
 
 HKtrue_list = "/Users/annelisegoldman/Documents/TCS Mining Project/HK and RR Lists/HK1ListTSV.txt"
@@ -69,20 +74,23 @@ def filewriter(filtdict, fileout): # Writes .csv file containing each ORF associ
       data = [cat, filtdict[cat]]
       wr.writerow(data)
 
-def main():
+def main(): # sets positive and negative lists and input based on the input files above 
   IPRdict = IPR_results(IPRresults)
   HKpos = IPR_list(HKtrue_list)
   HKneg = IPR_list(HKfalse_list)
   RRpos = IPR_list(RRtrue_list)
   RRneg = IPR_list(RRfalse_list)
   
+  # performs the filtering using the functions defined above 
   HKfilt = IPR_filter(IPRdict, HKpos, HKneg)
   RRfilt = IPR_filter(IPRdict, RRpos, RRneg)
   print("The number of HKs is",len(HKfilt))
   print("The number of RRs is",len(RRfilt))
   
+  # write results to two files, one for HKs, one for RRs
   filewriter(HKfilt, "DeMMO1_1_HK.csv") # Change file name to desired output file
   filewriter(RRfilt, "DeMMO1_1_RR_FalsePosShort.csv") # Change file name to desired output file
 
+# Do the complete filtering based on functions defined above
 if __name__ == "__main__":
   main()
