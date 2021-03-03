@@ -74,8 +74,21 @@ def filewriter(filtdict, fileout): # Writes .csv file containing each ORF associ
       data = [cat, filtdict[cat]]
       wr.writerow(data)
 
+def masterfilewriter(masterDictionary, fileout): # Writes .csv file containing a summary of all the HKs and RRs filtered from a directory
+  cats = masterDictionary.keys()
+  with open(fileout, "w") as outfile:
+    wr = csv.writer(outfile)
+    headers=["Genome","# HKs","# RRs"]
+    wr.writerow(headers)
+    for cat in cats:
+      data = [cat, masterDictionary[cat][0], masterDictionary[cat][1]]
+      wr.writerow(data)
+
 def main(): # sets positive and negative lists and input based on the input files above 
+  # prints 3 files: all HKs in directory (ORFs and IPRs), all RRs in directory 
+  # (ORFs and IPRs), and summary file of each genome in directory, #HKs, #RRs
   IPRdict = IPR_results(IPRresults)
+
   HKpos = IPR_list(HKtrue_list)
   HKneg = IPR_list(HKfalse_list)
   RRpos = IPR_list(RRtrue_list)
@@ -88,8 +101,30 @@ def main(): # sets positive and negative lists and input based on the input file
   print("The number of RRs is",len(RRfilt))
   
   # write results to two files, one for HKs, one for RRs
-  filewriter(HKfilt, "DeMMO1_1_HK.csv") # Change file name to desired output file
-  filewriter(RRfilt, "DeMMO1_1_RR_FalsePosShort.csv") # Change file name to desired output file
+  filewriter = {}
+  # change directory path
+  for filename in os.listdir("/Users/annelisegoldman/Documents/TCS Mining Project/DeMMO2 Outputs"):
+    if filename.endswith(".tsv"):
+      # change output file names
+      filewriter[str(filename)] = [HKfilt, "DeMMO1_HKs.csv"]
+      filewriter[str(filename)] = [RRfilt, "DeMMO1_RRs.csv"]
+  
+  #filewriter(HKfilt, "DeMMO1_1_HK.csv") # Change file name to desired output file
+  #filewriter(RRfilt, "DeMMO1_1_RR_FalsePosShort.csv") # Change file name to desired output file
+
+  # write summary file with genome ID, #HKs, and #RRs
+  masterDictionary = {}
+  # change directory path 
+  for filename in os.listdir("/Users/annelisegoldman/Documents/TCS Mining Project/DeMMO2 Outputs"):
+    if filename.endswith(".tsv"):
+      IPRdict = IPR_results(filename)
+      HKfilt = IPR_filter(IPRdict, HKpos, HKneg)
+      RRfilt = IPR_filter(IPRdict, RRpos, RRneg)
+      masterDictionary[str(filename)] = [len(HKfilt), len(RRfilt)]
+    
+    print(str(len(masterDictionary.keys())))
+    # change summary output file name
+    masterfilewriter(masterDictionary, "DeMMO2_noHHKs.csv")
 
 # Do the complete filtering based on functions defined above
 if __name__ == "__main__":
