@@ -8,11 +8,11 @@ import os
 import re
 
 # Change working directory path 
-os.chdir("/Users/annelisegoldman/TCS_mining/DeMMOworkflow/DeMMO1Outputs")
+os.chdir("/Users/annelisegoldman/TCS_mining/DeMMO1Outputs")
 
 # Input file paths for InterProScan results (this is just the first file in the working directory), 
 # true and false HK and RR lists. All files should be in .tsv format.
-IPRresults = "/Users/annelisegoldman/TCS_mining/DeMMOworkflow/DeMMO1Outputs/orf_DeMMO1_1.fa.tsv"
+IPRresults = "/Users/annelisegoldman/TCS_mining/DeMMO1Outputs/orf_DeMMO1_1.fa.tsv"
 
 HKtrue_list = "/Users/annelisegoldman/TCS_mining/DeMMOworkflow/HK1ListTSV.txt"
 HKfalse_list = "/Users/annelisegoldman/TCS_mining/DeMMOworkflow/HKFalseListTSV.txt"
@@ -52,7 +52,7 @@ def IPR_filter(IPRdict, pos_list, neg_list): # Filters ORFS for IPRs matching tr
   filtdict = {}
   pos_set = set(pos_list)
   neg_set = set(neg_list)
-  # Create dictionary (posdict) containing only OFRs with at least one true associated IPR signature 
+  # Create dictionary (posdict) containing only ORFs with at least one true associated IPR signature 
   for key, val in IPRdict.items():
     val_set = set(val)
     if len(val_set.intersection(pos_set)) > 0:
@@ -68,7 +68,7 @@ def filewriter(filtdict, fileout): # Writes .csv file containing each ORF associ
   cats=filtdict.keys()
   with open(fileout, "w") as outfile:
     wr = csv.writer(outfile)
-    headers=["ORF", "IPRs"]
+    headers=["Genome", "ORFs and IPRs"]
     wr.writerow(headers)
     for cat in cats:
       data = [cat, filtdict[cat][0]]
@@ -89,24 +89,17 @@ def main(): # sets positive and negative lists and input based on the input file
   # (ORFs and IPRs), and summary file of each genome in directory, #HKs, #RRs
   
   IPRdict = IPR_results(IPRresults)
-
   HKpos = IPR_list(HKtrue_list)
   HKneg = IPR_list(HKfalse_list)
   RRpos = IPR_list(RRtrue_list)
   RRneg = IPR_list(RRfalse_list)
   
-  # performs the filtering using the functions defined above 
-  #HKfilt = IPR_filter(IPRdict, HKpos, HKneg)
-  #RRfilt = IPR_filter(IPRdict, RRpos, RRneg)
-  #print("The number of HKs is",len(HKfilt))
-  #print("The number of RRs is",len(RRfilt))
-  
   # write results for HKs
   filtdict = {}
   # change directory path
-  for filename in os.listdir("/Users/annelisegoldman/TCS_mining/DeMMOworkflow/DeMMO1Outputs"):
+  for filename in os.listdir("/Users/annelisegoldman/TCS_mining/DeMMO1Outputs"):
     if filename.endswith(".tsv"):
-      IPRdict = IPR_results(IPRresults)
+      IPRdict = IPR_results(filename)
       HKfilt = IPR_filter(IPRdict, HKpos, HKneg)
       filtdict[(filename)] = [HKfilt]
 
@@ -116,9 +109,9 @@ def main(): # sets positive and negative lists and input based on the input file
   # write results for RRs
   filtdict = {}
   # change directory path
-  for filename in os.listdir("/Users/annelisegoldman/TCS_mining/DeMMOworkflow/DeMMO1Outputs"):
+  for filename in os.listdir("/Users/annelisegoldman/TCS_mining/DeMMO1Outputs"):
     if filename.endswith(".tsv"):
-      IPRdict = IPR_results(IPRresults)
+      IPRdict = IPR_results(filename)
       RRfilt = IPR_filter(IPRdict, RRpos, RRneg)
       filtdict[(filename)] = [RRfilt]
 
@@ -128,7 +121,7 @@ def main(): # sets positive and negative lists and input based on the input file
   # write summary file with genome ID, #HKs, and #RRs
   masterDictionary = {}
   # change directory path 
-  for filename in os.listdir("/Users/annelisegoldman/TCS_mining/DeMMOworkflow/DeMMO1Outputs"):
+  for filename in os.listdir("/Users/annelisegoldman/TCS_mining/DeMMO1Outputs"):
     if filename.endswith(".tsv"):
       IPRdict = IPR_results(filename)
       HKfilt = IPR_filter(IPRdict, HKpos, HKneg)
