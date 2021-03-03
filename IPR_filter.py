@@ -8,16 +8,16 @@ import os
 import re
 
 # Change working directory path 
-os.chdir("/Users/annelisegoldman/Documents/TCS Mining Project/DeMMO1 Outputs")
+os.chdir("/Users/annelisegoldman/TCS_mining/DeMMOworkflow/DeMMO1Outputs")
 
 # Input file paths for InterProScan results (this is just the first file in the working directory), 
 # true and false HK and RR lists. All files should be in .tsv format.
-IPRresults = "/Users/annelisegoldman/Documents/TCS Mining Project/DeMMO1 Outputs/orf_DeMMO1_1.fa.tsv"
+IPRresults = "/Users/annelisegoldman/TCS_mining/DeMMOworkflow/DeMMO1Outputs/orf_DeMMO1_1.fa.tsv"
 
-HKtrue_list = "/Users/annelisegoldman/Documents/TCS Mining Project/HK and RR Lists/HK1ListTSV.txt"
-HKfalse_list = "/Users/annelisegoldman/Documents/TCS Mining Project/HK and RR Lists/HKFalseListTSV.txt"
-RRtrue_list = "/Users/annelisegoldman/Documents/TCS Mining Project/HK and RR Lists/RR1ListTSV.txt"
-RRfalse_list = "/Users/annelisegoldman/Documents/TCS Mining Project/HK and RR Lists/RRFalseListShortTSV.txt"
+HKtrue_list = "/Users/annelisegoldman/TCS_mining/DeMMOworkflow/HK1ListTSV.txt"
+HKfalse_list = "/Users/annelisegoldman/TCS_mining/DeMMOworkflow/HKFalseListTSV.txt"
+RRtrue_list = "/Users/annelisegoldman/TCS_mining/DeMMOworkflow/RR1ListTSV.txt"
+RRfalse_list = "/Users/annelisegoldman/TCS_mining/DeMMOworkflow/RRFalseListShortTSV.txt"
 
 def IPR_results(file):
   #Create dictionary from InterProScan results with ORFs as keys and IPR list as values
@@ -71,7 +71,7 @@ def filewriter(filtdict, fileout): # Writes .csv file containing each ORF associ
     headers=["ORF", "IPRs"]
     wr.writerow(headers)
     for cat in cats:
-      data = [cat, filtdict[cat]]
+      data = [cat, filtdict[cat][0]]
       wr.writerow(data)
 
 def masterfilewriter(masterDictionary, fileout): # Writes .csv file containing a summary of all the HKs and RRs filtered from a directory
@@ -87,6 +87,7 @@ def masterfilewriter(masterDictionary, fileout): # Writes .csv file containing a
 def main(): # sets positive and negative lists and input based on the input files above 
   # prints 3 files: all HKs in directory (ORFs and IPRs), all RRs in directory 
   # (ORFs and IPRs), and summary file of each genome in directory, #HKs, #RRs
+  
   IPRdict = IPR_results(IPRresults)
 
   HKpos = IPR_list(HKtrue_list)
@@ -95,27 +96,39 @@ def main(): # sets positive and negative lists and input based on the input file
   RRneg = IPR_list(RRfalse_list)
   
   # performs the filtering using the functions defined above 
-  HKfilt = IPR_filter(IPRdict, HKpos, HKneg)
-  RRfilt = IPR_filter(IPRdict, RRpos, RRneg)
-  print("The number of HKs is",len(HKfilt))
-  print("The number of RRs is",len(RRfilt))
+  #HKfilt = IPR_filter(IPRdict, HKpos, HKneg)
+  #RRfilt = IPR_filter(IPRdict, RRpos, RRneg)
+  #print("The number of HKs is",len(HKfilt))
+  #print("The number of RRs is",len(RRfilt))
   
-  # write results to two files, one for HKs, one for RRs
-  filewriter = {}
+  # write results for HKs
+  filtdict = {}
   # change directory path
-  for filename in os.listdir("/Users/annelisegoldman/Documents/TCS Mining Project/DeMMO2 Outputs"):
+  for filename in os.listdir("/Users/annelisegoldman/TCS_mining/DeMMOworkflow/DeMMO1Outputs"):
     if filename.endswith(".tsv"):
-      # change output file names
-      filewriter[str(filename)] = [HKfilt, "DeMMO1_HKs.csv"]
-      filewriter[str(filename)] = [RRfilt, "DeMMO1_RRs.csv"]
-  
-  #filewriter(HKfilt, "DeMMO1_1_HK.csv") # Change file name to desired output file
-  #filewriter(RRfilt, "DeMMO1_1_RR_FalsePosShort.csv") # Change file name to desired output file
+      IPRdict = IPR_results(IPRresults)
+      HKfilt = IPR_filter(IPRdict, HKpos, HKneg)
+      filtdict[(filename)] = [HKfilt]
 
+    print(str(filtdict.keys()))
+    filewriter(filtdict, "DeMMO1_HKs.csv")
+
+  # write results for RRs
+  filtdict = {}
+  # change directory path
+  for filename in os.listdir("/Users/annelisegoldman/TCS_mining/DeMMOworkflow/DeMMO1Outputs"):
+    if filename.endswith(".tsv"):
+      IPRdict = IPR_results(IPRresults)
+      RRfilt = IPR_filter(IPRdict, RRpos, RRneg)
+      filtdict[(filename)] = [RRfilt]
+
+    print(str(filtdict.keys()))
+    filewriter(filtdict, "DeMMO1_RRs.csv")
+    
   # write summary file with genome ID, #HKs, and #RRs
   masterDictionary = {}
   # change directory path 
-  for filename in os.listdir("/Users/annelisegoldman/Documents/TCS Mining Project/DeMMO2 Outputs"):
+  for filename in os.listdir("/Users/annelisegoldman/TCS_mining/DeMMOworkflow/DeMMO1Outputs"):
     if filename.endswith(".tsv"):
       IPRdict = IPR_results(filename)
       HKfilt = IPR_filter(IPRdict, HKpos, HKneg)
@@ -124,7 +137,7 @@ def main(): # sets positive and negative lists and input based on the input file
     
     print(str(len(masterDictionary.keys())))
     # change summary output file name
-    masterfilewriter(masterDictionary, "DeMMO2_noHHKs.csv")
+    masterfilewriter(masterDictionary, "DeMMO1_summary.csv")
 
 # Do the complete filtering based on functions defined above
 if __name__ == "__main__":
