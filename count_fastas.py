@@ -8,31 +8,39 @@ import os.path
 
 # set the base directory 
 basedir = "/Users/annelisegoldman/TCS_mining/demmo_faa_backup/"
+faa_file = os.path.join(basedir, "11.faa")
 
 def fasta_counter(filename):
     # counts the number of proteins in a fasta file
     # each protein identified by the ">" at the beginning 
     # essentially counting the number of ">" in each fasta file
-    gene_num = []
-    fh = open(filename)
-    n = 0
-    for line in fh: 
-        if line.startswith(">"): 
-            n += 1 
-        fh.close()
-        gene_num.append(n)
+    with open(os.path.join(basedir, filename), "rt") as fastaFile:
+        gene_num = {}
+        for line in fastaFile: 
+            num = len([1 for line in open(filename) if line.startswith(">")])
+            gene_num[(filename)] = num
+    return gene_num
+
+def filewriter(countdict, fileout):
+    cats = countdict.keys()
+    with open(fileout, "w") as outfile:
+        wr = csv.writer(outfile)
+        headers = ["Genome", "# genes"]
+        wr.writerow(headers)
+        for cat in cats:
+            data = [cat, countdict[cat][0]]
+            wr.writerow(data)
+
+faadict = fasta_counter(faa_file)
+
+finaldict = {}
 
 for file in os.listdir("/Users/annelisegoldman/TCS_mining/demmo_faa_backup/"):
-    fasta_counter(file)
-    print(fasta_counter(file))
+    if file.endswith(".faa"):
+        faadict = fasta_counter(file)
+        finaldict[(file)] = [faadict]
 
-
-#with open('/Users/annelisegoldman/TCS_mining/demmo_faa_backup/MAG_gene_counts.csv', 'w', newline = '') as outfile:
-    #csv = csv.writer(outfile)
-   # headers = ["Genome", "# Genes"]
-   # csv.writerow(headers)
-
-    
+filewriter(finaldict, os.path.join(basedir, "DeMMO_gene_counts.csv"))
 
 
 
