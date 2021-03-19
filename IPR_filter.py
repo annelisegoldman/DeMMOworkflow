@@ -11,13 +11,15 @@ basedir = sys.argv[1]
 print(basedir)
 # Change working directory path 
 # os.chdir("/Users/annelisegoldman/TCS_mining/demmo_tsv_outputs")
-TSVpath = os.path.join(basedir, "demmo_tsv_outputs")
-CSVpath = os.path.join(basedir, "demmo_csv_outputs")
+TSVpath = os.path.join(basedir, "demmo_tsv_outputs/")
+CSVpath = os.path.join(basedir, "demmo_csv_outputs/")
+FAApath = os.path.join(basedir, "demmo_faa_backup/")
 
 # Input file paths for InterProScan results (this is just the first file in the working directory), 
-# true and false HK and RR lists. All files should be in .tsv format.
+# true and false HK and RR lists. 
 IPRresults = os.path.join(basedir, "demmo_tsv_outputs/FAA_ID12.SLURM_JOB_ID2577241.tsv") 
-for p in [TSVpath, CSVpath, IPRresults]:
+faa_files = os.path.join(basedir, "demmo_faa_backup/11.faa")
+for p in [TSVpath, CSVpath, FAApath, IPRresults, faa_files]:
   if not os.path.exists(p): 
     print("Path does not exist", p)
     exit()
@@ -54,6 +56,18 @@ def IPR_list(file):
     IPRlist = [val for sublist in IPRlist for val in sublist]
   return IPRlist
 
+def fasta_counter(file):
+  # counts the number of proteins in a fasta file
+  # each protein identified by the ">" at the beginning 
+  # essentially counting the number of ">" in each fasta file
+  with open(file, "rt") as fastaFile:
+    faaReader = fastaFile.read()
+    gene_num = {}
+    for line in faaReader: 
+      num = len([1 for line in faaReader if line.startswith(">")])
+      gene_num[str(file)] = num
+  return gene_num
+
 def IPR_filter(IPRdict, pos_list, neg_list): # Filters ORFS for IPRs matching true (but not false) IPR signatures
   posdict = {}
   filtdict = {}
@@ -79,6 +93,16 @@ def filewriter(filtdict, fileout): # Writes .csv file containing each ORF associ
     wr.writerow(headers)
     for cat in cats:
       data = [cat, filtdict[cat][0]]
+      wr.writerow(data)
+
+def filewriter2(countdict, fileout): # Writes .csv file containing the total number of genes for each genome
+  cats = countdict.keys()
+  with open(fileout, "w") as outfile: 
+    wr = csv.writer(outfile)
+    headers = ["Genome", "# Genes"]
+    wr.writerow(headers)
+    for cat in cats:
+      data = [cat, countdict[cat][0]]
       wr.writerow(data)
 
 def masterfilewriter(masterDictionary, fileout): # Writes .csv file containing a summary of all the HKs and RRs filtered from a directory
@@ -138,7 +162,15 @@ def main(): # sets positive and negative lists and input based on the input file
     #print(str(len(masterDictionary.keys())))
     # change summary output file name
     masterfilewriter(masterDictionary, os.path.join(CSVpath,"DeMMO_summary_531.csv"))
+  
+  # write file with genome ID and #genes
+  faadict = {}
+  # change directory path
+  for filename in os.listdir(FAApath):
+    if filename.endswith(".faa"):
+      faacount = fasta_counter(filename)
+      faadict[(filename)] = [faacount]
+    filewriter2(faadict, os.path.join(CSVpath, "DeMMO_total_gene_counts.csv"))
 
-# Do the complete filtering based on functions defined above
 if __name__ == "__main__":
   main()
