@@ -4,7 +4,6 @@ from pathlib import Path
 
 inbox = "/Users/emilyfulk/Downloads/demmo_faa_errors"
 outbox = "/Users/emilyfulk/Downloads/demmo_faa_errors"
-# renamed_faa_dir = "/Users/emilyfulk/Downloads/demmo_faa_errors"
 
 for filename in os.listdir(inbox):
     if filename.endswith(".faa"):
