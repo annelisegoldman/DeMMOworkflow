@@ -1,0 +1,15 @@
+#!/bin/bash
+
+FILEPATH=$1
+#INBOX=$2
+OUTBOX=$2
+
+#basename "$FILEPATH"
+
+export FILENAME="$(basename "${FILEPATH}")"
+
+export FAA_ID=${FILENAME//[^0-9]/}
+seqtk rename $FILEPATH $FAA_ID- > ${FAA_ID}_renamed.faa
+
+mv ${FAA_ID}_renamed.faa $OUTBOX
+
