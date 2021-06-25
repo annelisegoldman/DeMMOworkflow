@@ -8,7 +8,7 @@ export FILENAME="$(basename "${FILEPATH}")"
 
 export FAA_ID=${FILENAME//[^0-9]/}
 
-export SEQLIST=$(find $LSTPATH -name *${FAA_ID}*.lst)
+export SEQLIST=$(find $LSTPATH -name *${FAA_ID}*.lst) #add conditions to make it exact match)
 
 seqtk subseq $FILEPATH $SEQLIST > ${FAA_ID}_temp.faa
 seqtk rename ${FAA_ID}_temp.faa $FAA_ID- > ${FAA_ID}_renamed.faa
