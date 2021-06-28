@@ -16,9 +16,9 @@ import glob
 
 # Set directory paths, including the base directory, the directory where the .tsv InterProScan outputs 
 # can be found, and the directory where you would like to put the .csv HK sequence list outputs.
-basedir = "/Users/annelisegoldman/TCS_mining/"
-TSVpath = os.path.join(basedir, "demmo_tsv_outputs/")
-seqpath = os.path.join(basedir, "demmo_seq_outputs/")
+basedir = "/home/"
+TSVpath = os.path.join(basedir, "IPR/")
+seqpath = os.path.join(basedir, "indv_HKseq_names/")
 
 # Set paths for locations of HK true and false lists. If desired, can also run this script to pull out RR
 # sequence names, so RR true and false lists are also included but commented out for now.
