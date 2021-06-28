@@ -1,15 +1,27 @@
 #!/bin/bash
 
-FILEPATH=$1
-#INBOX=$2
-OUTBOX=$2
-
-#basename "$FILEPATH"
+export FILEPATH=$1
+export LSTPATH=$2
+export OUTBOX=$3
 
 export FILENAME="$(basename "${FILEPATH}")"
 
 export FAA_ID=${FILENAME//[^0-9]/}
-seqtk rename $FILEPATH $FAA_ID- > ${FAA_ID}_renamed.faa
 
-mv ${FAA_ID}_renamed.faa $OUTBOX
+export SEQLIST=$(find $LSTPATH -name *${FAA_ID}*.lst) #add conditions to make it exact match)
 
+seqtk subseq $FILEPATH $SEQLIST > ${FAA_ID}_temp.faa
+seqtk rename ${FAA_ID}_temp.faa $FAA_ID- > ${FAA_ID}_renamed.faa
+cat ${FAA_ID}_renamed.faa >> allHKseq.faa
+
+# Create lists to assemble dictionary of old sequences keys:new keys
+#grep "^>" ${FAA_ID}_temp.faa > oldkeys.txt
+#grep "^>" ${FAA_ID}_renamed.faa > newkeys.txt
+
+#awk 'sub(/^>/, "")' ${FAA_ID}_temp.faa > oldkeys.txt
+#awk 'sub(/^>/, "")' ${FAA_ID}_renamed.faa > newkeys.txt
+
+#cat oldkeys.txt > alloldkeys.txt
+#cat newkeys.txt > allnewkeys.txt
+
+#mv ${FAA_ID}_renamed.faa $OUTBOX

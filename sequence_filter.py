@@ -1,9 +1,10 @@
 # DeMMO TCS pipeline -- sequence_filter.py 
 # Goal of this script: for each TSV file containing all sequence names with associated IPR signatures, 
 # pull out the HK protein names and relevant IPR signatures. For each TSV input with a genome file name, 
-# this will create a CSV output with the same genome file name. 
+# this will create a CSV output and a .lst output with the same genome file name. 
 # Run this script AFTER running .faa files through InterProScan and BEFORE running scripts to pull out 
-# HK sequences from .faa files. Can be run in tandem with IPR_filter.py. 
+# HK sequences from .faa files. The script to pull out HK sequences uses the .lst files as input, hence 
+# this needs to be run first. Can be run in tandem with IPR_filter.py. 
 
 # Import relevant environments 
 import csv
@@ -84,8 +85,8 @@ def main():
     # Create a dictionary of IPR signatures for each .tsv file found in the TSVpath directory, then filter out HK 
     # true positives and create a new file in the seqpath directory with the same file name as the .tsv file (the 
     # genome name). For every .tsv file input with all identifed proteins in a genome, there is a .csv output with 
-    # just HKs and associated IPR signatures. This can be used with RRs too -- the RR relevant portions are currently 
-    # commented out. 
+    # just HKs and associated IPR signatures, and a .lst output with just HK sequence names. This can be used with 
+    # RRs too -- the RR relevant portions are currently commented out. 
 
     # Change directory to TSVpath
     os.chdir(TSVpath)
@@ -110,6 +111,28 @@ def main():
                 wr.writerow([key, val])
             #for key, val in RRfilt.items():
                 #wr.writerow([key, val])
+
+        # Repeat the same process as in the with loop above, but this time making a .lst file with only 
+        # sequence names, not the matching IPR IDs (only the dictionary keys)
+        with open(os.path.join(seqpath, (file.rsplit(".",1)[0])+ ".lst"), "w") as outfile:
+            outfile.write(str(file.rsplit(".",1)[0]))
+            outfile.write('\n')
+
+            # Create dictionary of all ORFs and associated IPRs, list of true HKs and false HKs signatures
+            IPRdict = IPR_results(file)
+            HKpos = IPR_list(HKtrue_list)
+            HKneg = IPR_list(HKfalse_list)
+            #RRpos = IPR_list(RRtrue_list)
+            #RRneg = IPR_list(RRfalse_list)
+
+            HKfilt = IPR_filter(IPRdict, HKpos, HKneg)
+            #RRfilt = IPR_filter(IPRdict, RRpos, RRneg)
+
+            # Write just the HKfilt dictionary keys to the new .lst file
+            outfile.write('\n'.join(HKfilt.keys()))
+            outfile.write('\n')
+            #outfile.write('\n'.join(RRfilt.keys()))
+           #outfile.write('\n')
 
 # Run the whole script 
 if __name__ == "__main__":
