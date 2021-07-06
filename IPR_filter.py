@@ -7,26 +7,26 @@ import collections
 import os
 import re
 import sys
-basedir = sys.argv[1] 
+basedir = "/home/alg18/" 
 print(basedir)
 # Change working directory path 
 # os.chdir("/Users/annelisegoldman/TCS_mining/demmo_tsv_outputs")
-TSVpath = os.path.join(basedir, "demmo_tsv_outputs/")
-CSVpath = os.path.join(basedir, "demmo_csv_outputs/")
-FAApath = os.path.join(basedir, "demmo_faa_backup/")
+TSVpath = os.path.join(basedir, "IPR/")
+CSVpath = os.path.join(basedir, "count_summaries/")
+#FAApath = os.path.join(basedir, "Prodigal/")
 
 # Input file paths for InterProScan results (this is just the first file in the working directory), 
 # true and false HK and RR lists. 
-IPRresults = os.path.join(basedir, "demmo_tsv_outputs/FAA_ID12.SLURM_JOB_ID2577241.tsv") 
-faa_files = os.path.join(basedir, "demmo_faa_backup/11.faa")
-for p in [TSVpath, CSVpath, FAApath, IPRresults, faa_files]:
+IPRresults = os.path.join(TSVpath,"FAA_ID230.SLURM_JOB_ID2544891.tsv") 
+#faa_files = os.path.join(FAApath, "230.faa")
+for p in [TSVpath, CSVpath, IPRresults]:
   if not os.path.exists(p): 
     print("Path does not exist", p)
     exit()
-HKtrue_list = "HK1ListTSV.txt"
-HKfalse_list = "HKFalseListTSV.txt"
-RRtrue_list = "RR1ListTSV.txt"
-RRfalse_list = "RRFalseListShortTSV.txt"
+HKtrue_list = os.path.join(basedir, "DeMMOworkflow/HK1ListTSV.txt")
+HKfalse_list = os.path.join(basedir, "DeMMOworkflow/HKFalseListTSV.txt")
+RRtrue_list = os.path.join(basedir, "DeMMOworkflow/RR1ListTSV.txt")
+RRfalse_list = os.path.join(basedir, "DeMMOworkflow/RRFalseListShortTSV.txt")
 
 def IPR_results(file):
   #Create dictionary from InterProScan results with ORFs as keys and IPR list as values
@@ -56,17 +56,17 @@ def IPR_list(file):
     IPRlist = [val for sublist in IPRlist for val in sublist]
   return IPRlist
 
-def fasta_counter(file):
+#def fasta_counter(file):
   # counts the number of proteins in a fasta file
   # each protein identified by the ">" at the beginning 
   # essentially counting the number of ">" in each fasta file
-  with open(file, "rt") as fastaFile:
-    faaReader = fastaFile.read()
-    gene_num = {}
-    for line in faaReader: 
-      num = len([1 for line in faaReader if line.startswith(">")])
-      gene_num[str(file)] = num
-  return gene_num
+  #with open(file, "rt") as fastaFile:
+    #faaReader = fastaFile.read()
+    #gene_num = {}
+    #for line in faaReader: 
+      #num = len([1 for line in faaReader if line.startswith(">")])
+      #gene_num[str(file)] = num
+  #return gene_num
 
 def IPR_filter(IPRdict, pos_list, neg_list): # Filters ORFS for IPRs matching true (but not false) IPR signatures
   posdict = {}
@@ -95,15 +95,15 @@ def filewriter(filtdict, fileout): # Writes .csv file containing each ORF associ
       data = [cat, filtdict[cat][0]]
       wr.writerow(data)
 
-def filewriter2(countdict, fileout): # Writes .csv file containing the total number of genes for each genome
-  cats = countdict.keys()
-  with open(fileout, "w") as outfile: 
-    wr = csv.writer(outfile)
-    headers = ["Genome", "# Genes"]
-    wr.writerow(headers)
-    for cat in cats:
-      data = [cat, countdict[cat][0]]
-      wr.writerow(data)
+#def filewriter2(countdict, fileout): # Writes .csv file containing the total number of genes for each genome
+  #cats = countdict.keys()
+  #with open(fileout, "w") as outfile: 
+    #wr = csv.writer(outfile)
+    #headers = ["Genome", "# Genes"]
+    #wr.writerow(headers)
+    #for cat in cats:
+      #data = [cat, countdict[cat][0]]
+      #wr.writerow(data)
 
 def masterfilewriter(masterDictionary, fileout): # Writes .csv file containing a summary of all the HKs and RRs filtered from a directory
   cats = masterDictionary.keys()
@@ -135,7 +135,7 @@ def main(): # sets positive and negative lists and input based on the input file
       filtdict[(filename)] = [HKfilt]
 
     #print(str(filtdict.keys()))
-    filewriter(filtdict, os.path.join(CSVpath, "DeMMO_HKs_531.csv"))
+    filewriter(filtdict, os.path.join(CSVpath, "DeMMO_HKabundance_counts.csv"))
 
   # write results for RRs
   filtdict = {}
@@ -147,7 +147,7 @@ def main(): # sets positive and negative lists and input based on the input file
       filtdict[(filename)] = [RRfilt]
 
     #print(str(filtdict.keys()))
-    filewriter(filtdict, os.path.join(CSVpath, "DeMMO_RRs_531.csv"))
+    filewriter(filtdict, os.path.join(CSVpath, "DeMMO_RRabundance_counts.csv"))
     
   # write summary file with genome ID, #HKs, and #RRs
   masterDictionary = {}
@@ -161,16 +161,16 @@ def main(): # sets positive and negative lists and input based on the input file
     
     #print(str(len(masterDictionary.keys())))
     # change summary output file name
-    masterfilewriter(masterDictionary, os.path.join(CSVpath,"DeMMO_summary_531.csv"))
+    masterfilewriter(masterDictionary, os.path.join(CSVpath,"DeMMO_abundance_counts.csv"))
   
   # write file with genome ID and #genes
-  faadict = {}
+ # faadict = {}
   # change directory path
-  for filename in os.listdir(FAApath):
-    if filename.endswith(".faa"):
-      faacount = fasta_counter(filename)
-      faadict[(filename)] = [faacount]
-    filewriter2(faadict, os.path.join(CSVpath, "DeMMO_total_gene_counts.csv"))
+  #for filename in os.listdir(FAApath):
+    #if filename.endswith(".faa"):
+      #faacount = fasta_counter(filename)
+      #faadict[(filename)] = [faacount]
+    #filewriter2(faadict, os.path.join(CSVpath, "DeMMO_total_gene_counts.csv"))
 
 if __name__ == "__main__":
   main()

@@ -2,10 +2,10 @@ import os
 import subprocess
 from pathlib import Path
 
-inbox = "/Users/emilyfulk/Downloads/demmo_faa_errors/"
-lst_dir = "/Users/emilyfulk/Downloads/demmo_faa_errors"
-outbox = "/Users/emilyfulk/Downloads/demmo_faa_errors"
+inbox = "/home/alg18/Prodigal/"
+lst_dir = "/home/alg18/indv_HKseq_names/"
+outbox = "/home/alg18/HK_seqs/"
 
 for filename in os.listdir(inbox):
     if filename.endswith(".faa"):
-        subprocess.run(["bash", "seqtk_run", os.path.join(inbox,filename), lst_dir, Path(outbox)])
+        subprocess.run(["bash", "/home/alg18/DeMMOworkflow/seqtk_run", os.path.join(inbox,filename), lst_dir, Path(outbox)])

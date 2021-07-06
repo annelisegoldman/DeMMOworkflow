@@ -2,8 +2,8 @@ import os
 import subprocess
 from pathlib import Path
 
-inbox = "/Users/emilyfulk/Downloads/demmo_faa_errors"
-outbox = "/Users/emilyfulk/Downloads/demmo_faa_errors"
+inbox = "/Prodigal/"
+outbox = "/HK_seqs/"
 
 for filename in os.listdir(inbox):
     if filename.endswith(".faa"):
