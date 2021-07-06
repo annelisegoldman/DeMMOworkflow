@@ -17,7 +17,7 @@ import glob
 
 # Set directory paths, including the base directory, the directory where the .tsv InterProScan outputs 
 # can be found, and the directory where you would like to put the .csv HK sequence list outputs.
-basedir = "/home/"
+basedir = "/home/alg18/"
 TSVpath = os.path.join(basedir, "IPR/")
 seqpath = os.path.join(basedir, "indv_HKseq_names/")
 

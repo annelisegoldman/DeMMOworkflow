@@ -24,4 +24,6 @@ cat ${FAA_ID}_renamed.faa >> allHKseq.faa
 #cat oldkeys.txt > alloldkeys.txt
 #cat newkeys.txt > allnewkeys.txt
 
-#mv ${FAA_ID}_renamed.faa $OUTBOX
+mv ${FAA_ID}_renamed.faa $OUTBOX
+mv ${FAA_ID}_temp.faa $OUTBOX
+#mv allHKseq.faa $OUTBOX
