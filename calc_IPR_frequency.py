@@ -6,8 +6,8 @@ import re
 from pathlib import Path
 import ast
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
+#import seaborn as sns
+#import matplotlib.pyplot as plt
 
 basedir = Path("/Users/emilyfulk/Desktop/allIPRtest")
 inbox = basedir / "inbox"
@@ -97,9 +97,13 @@ def main():
     percent_df = freq_df['Frequency per sequence (%)'].unstack().fillna(0)
 
     # plot heatmap
-    fig = sns.heatmap(percent_df, vmin = 0, vmax = 100, cmap = 'viridis', annot = True)
-    fig.set_title('Frequency per site (%)')
-    plt.show()
+    #fig = sns.heatmap(percent_df, vmin = 0, vmax = 100, cmap = 'viridis', annot = True)
+    #fig.set_title('Frequency per site (%)')
+    #plt.show()
+
+    # alternative to plotting heatmap: just output a dataframe that we can plot later 
+    freq_df.to.csv("mymount/joff/211103_all_IPR/calc_IPR_freq.py", index = False)
+    percent_df.to.csv"mymount/joff/211103_all_IPR/calc_IPR_freq.py", index = False)
 
 if __name__ == "__main__":
     main()
