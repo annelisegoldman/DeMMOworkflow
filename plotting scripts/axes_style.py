@@ -1,3 +1,4 @@
+## Contains useful functions for setting axes styling, axes height, and enabling symlog plots
 
 from matplotlib.pyplot import rc
 import numpy as np
