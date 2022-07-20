@@ -12,8 +12,8 @@ def set_axes_style():
     rc('ytick',**{'major.size': 5})
     rc('ytick',**{'minor.size': 2.5})
     rc('xtick',**{'major.size': 5})
-    rc('ytick',**{'labelsize': 10})
-    rc('xtick',**{'labelsize': 10})
+    rc('ytick',**{'labelsize': 8})
+    rc('xtick',**{'labelsize': 8})
     rc('axes',**{'labelsize': 10})
     rc('svg', **{'fonttype': 'none'})
     rc('mathtext', **{'default' : 'regular'}) #change latex font to regular font
