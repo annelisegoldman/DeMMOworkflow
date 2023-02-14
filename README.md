@@ -8,6 +8,13 @@ This series of scripts is used as post-processing and assumes that genomes have 
 
 ***Note 02/08/23: just adding the file descriptions, still need to go through and document each code and organize this***
 
+## Dependencies
+Need to fill this out
+
+## Analysing .faa files 
+1. (If needed) Convert DNA sequences to amino acid sequences
+If you are starting with nucleic acid sequences, convert to amino acid sequences. This project used [Prodigal](https://github.com/hyattpd/Prodigal "Prodigal") to generate predicted protein sequences from metagenome-assembled genomes. prodigal_demmo.sh analyzes batches of nucleic acid files using Prodigal.
+
 ### calc_IPR_frequency.py
 This script counts the number of IPR signatures (i.e. protein domains) associated with the HK sequences at the DeMMO sites. It calculates frequency metrics for how often each IPR signature occurs in the DeMMO site(s).
 I don't think we actually used this in the MS, might be able to remove
