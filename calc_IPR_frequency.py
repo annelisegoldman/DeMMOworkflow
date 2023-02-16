@@ -1,5 +1,8 @@
 # This script concatenates all HK-associated IPRs from all sites
-# As inputs, it takes .csv files from each genome that lists the name of each HK sequence and the IPRs associate with it
+# As inputs, it takes .csv files from each genome that lists the name of each HK sequence and the IPRs associate with it. It outputs:
+# 1. HK_frequency_per_site.csv: % of sequences per site with all IPR signatures identified in HKs
+# 2. HK_frequence_for_plotting.csv: parsed version of HK_frequency_per_site for easier plotting
+
 
 import csv
 import re
@@ -11,6 +14,7 @@ import pandas as pd
 
 basedir = Path("/Users/emilyfulk/Desktop/allIPRtest")
 inbox = basedir / "inbox"
+outbox = basedir / "outbox"
 
 def concat_iprs_dict(file): #Creates nested dictionary of {'faa_id':{'sequence name'}:{['IPR#...']}} for each file
 
@@ -90,20 +94,15 @@ def main():
     # tidy dictionary and compile list of IPRs
     global_dict, global_lst = parse_dict(raw_dict)
 
-    # calculate frequence of each IPR as a % of sequences per site
+    # calculate frequency of each IPR as a % of sequences per site
     freq_df = calc_frequencies(global_dict, global_lst, seq_count_dict)
 
     # parse data for plotting
     percent_df = freq_df['Frequency per sequence (%)'].unstack().fillna(0)
 
-    # plot heatmap
-    #fig = sns.heatmap(percent_df, vmin = 0, vmax = 100, cmap = 'viridis', annot = True)
-    #fig.set_title('Frequency per site (%)')
-    #plt.show()
-
-    # alternative to plotting heatmap: just output a dataframe that we can plot later 
-    freq_df.to.csv("mymount/joff/211103_all_IPR/calc_IPR_freq.py", index = False)
-    percent_df.to.csv"mymount/joff/211103_all_IPR/calc_IPR_freq.py", index = False)
+    # outputs freq_df and percent_df to .csv files
+    freq_df.to_csv("HK_frequency_per_site.csv")
+    percent_df.to_csv("HK_frequency_per_site.csv")
 
 if __name__ == "__main__":
     main()
