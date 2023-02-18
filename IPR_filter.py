@@ -7,7 +7,7 @@ import collections
 import os
 import re
 import sys
-basedir = "/home/alg18/" 
+basedir = "/base/directory"
 print(basedir)
 # Change working directory path 
 # os.chdir("/Users/annelisegoldman/TCS_mining/demmo_tsv_outputs")

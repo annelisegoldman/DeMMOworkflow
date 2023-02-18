@@ -8,9 +8,17 @@ This series of scripts is used as post-processing and assumes that genomes have 
 
 ***Note 02/08/23: just adding the file descriptions, still need to go through and document each code and organize this***
 
-### calc_IPR_frequency.py
-This script counts the number of IPR signatures (i.e. protein domains) associated with the HK sequences at the DeMMO sites. It calculates frequency metrics for how often each IPR signature occurs in the DeMMO site(s).
-I don't think we actually used this in the MS, might be able to remove
+## Dependencies
+
+## Analysing .faa files 
+1. (If needed) Convert DNA sequences to amino acid sequences
+If you are starting with nucleic acid sequences, convert to amino acid sequences. This project used [Prodigal](https://github.com/hyattpd/Prodigal "Prodigal") to generate predicted protein sequences from metagenome-assembled genomes. prodigal_demmo.sh analyzes batches of nucleic acid files using Prodigal.
+
+If starting with this step, define the paths to your Prodigal installation and your nucleic acid .fa files. Then run
+
+`bash prodigal_demmo.sh`
+
+2. Count the number of 
 
 ### count_fastas.py
 This script counts the number of proteins in each .faa file from Prodigal
@@ -26,9 +34,6 @@ This scripts runs all genome .fasta files in a directory through Prodigal, and m
 
 ### rename_fasta.py
 I think this script was supposed to rename fasta files to the numbered ID system we ended up using, but got copied/pasted over with another script by accident. I'll double check if I can find a local copy of the original -- luckily it isn't essential to the pipeline, so if we can't find it I don't think it needs to be re-written.
-
-### seqtk_error_check.py
-This script was written to make sure we were pulling out all the HK sequences from the proteome files. (We were. Not sure this is necessary to include)
 
 ### sequence_filter.py 
 Pulls out only HK sequences from the InterProScan .tsv files (can easily modify to also pull out RRs if desired). Creates two files for every input file (genome): 1) .csv file with the names of the HKs and all the associated IPR signatures (sometimes there are other identifying IPR signatures that can be helpful in later analyses) and 2) .lst file with the sequence names of all HK protein sequences in a given genome. 
