@@ -18,7 +18,7 @@ If starting with this step, define the paths to your Prodigal installation and y
 
 `bash prodigal_demmo.sh`
 
-2. Count the number of
+2. Count the number of 
 
 ### count_fastas.py
 This script counts the number of proteins in each .faa file from Prodigal
@@ -34,9 +34,6 @@ This scripts runs all genome .fasta files in a directory through Prodigal, and m
 
 ### rename_fasta.py
 I think this script was supposed to rename fasta files to the numbered ID system we ended up using, but got copied/pasted over with another script by accident. I'll double check if I can find a local copy of the original -- luckily it isn't essential to the pipeline, so if we can't find it I don't think it needs to be re-written.
-
-### seqtk_error_check.py
-This script was written to make sure we were pulling out all the HK sequences from the proteome files. (We were. Not sure this is necessary to include)
 
 ### sequence_filter.py 
 Pulls out only HK sequences from the InterProScan .tsv files (can easily modify to also pull out RRs if desired). Creates two files for every input file (genome): 1) .csv file with the names of the HKs and all the associated IPR signatures (sometimes there are other identifying IPR signatures that can be helpful in later analyses) and 2) .lst file with the sequence names of all HK protein sequences in a given genome. 
