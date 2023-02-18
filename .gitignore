@@ -4,5 +4,6 @@ venv/
 data/
 figures/
 plotting_scripts/
+unused_scripts/
 
 
