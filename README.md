@@ -18,8 +18,12 @@ If starting with this step, define the paths to your Prodigal installation and y
 
 `bash prodigal_demmo.sh`
 
-2. Count the number of 
+2. Count the number of histidine kinases (HKs) and response regulators (RR) in each amino acid FASTA file.
 
+Define filepaths to .tsv outputs from Interproscan, lists of HK/RR true and false positive IPR signatures, and where you want .csv outputs containing the number of HKs/RRs in each genome file to save. Then run:
+
+`python IPR_filter.py`
+**How did we batch this? The version in the github has hardcoded an individual .tsv file, which must have been how we tested it...**
 ### count_fastas.py
 This script counts the number of proteins in each .faa file from Prodigal
 
