@@ -4,9 +4,7 @@ This project consists of a series of scripts to use [InterProScan](https://githu
 
 ## Getting Started 
 
-This series of scripts is used as post-processing and assumes that genomes have already been run through InterProScan. The output should be a .tsv file for each input file (genome) with individual sequence names tagged with InterPro (IPR) signatures. You should also have the putative protein sequence .faa files (again, one for each genome) from Prodigal. Have these files ready to be referenced. Finally, make sure that [seqtk](https://github.com/lh3/seqtk) is installed on your computer. 
-
-***Note 02/08/23: just adding the file descriptions, still need to go through and document each code and organize this***
+This series of scripts is used as post-processing and assumes that genomes have already been run through InterProScan. The output should be a .tsv file for each input file (genome) with individual sequence names tagged with InterPro (IPR) signatures. You should also have the putative protein sequence .faa files (again, one for each genome) from Prodigal. Have these files ready to be referenced. Finally, make sure that [seqtk](https://github.com/lh3/seqtk) is installed on your computer.
 
 ## Dependencies
 
