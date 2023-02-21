@@ -6,3 +6,14 @@ I don't think we actually used this in the MS, might be able to remove
 
 ### seqtk_error_check.py
 This script was written to make sure we were pulling out all the HK sequences from the proteome files. (We were. Not sure this is necessary to include)
+
+### count_fastas_oldversion.py
+I took a lot of commented code out of this, preserving the older version just in case
+
+### extract_seq.py
+A draft of extract_sequences (I think) - it extracts the sequences, but doesn't deal with the renaming part
+
+extract_seq eventually got combined into extract_sequences with additional code to deal with renaming HK sequences to be identifiable
+
+### rename_fasta.py
+Exactly the same as extract_sequences. I think it got copied + renamed to match its function

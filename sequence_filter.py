@@ -6,7 +6,7 @@
 # HK sequences from .faa files. The script to pull out HK sequences uses the .lst files as input, hence 
 # this needs to be run first. Can be run in tandem with IPR_filter.py. 
 
-# Import relevant environments 
+# Import relevant packages
 import csv
 import collections
 import os
@@ -17,7 +17,7 @@ import glob
 
 # Set directory paths, including the base directory, the directory where the .tsv InterProScan outputs 
 # can be found, and the directory where you would like to put the .csv HK sequence list outputs.
-basedir = "/home/alg18/"
+basedir = "/path/to/basedirectory/"
 TSVpath = os.path.join(basedir, "IPR/")
 seqpath = os.path.join(basedir, "indv_HKseq_names/")
 

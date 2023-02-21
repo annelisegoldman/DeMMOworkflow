@@ -5,8 +5,7 @@
 import csv
 import collections
 import os
-import re
-import sys
+
 basedir = "/base/directory"
 
 # Define path for .tsv outputs from Interproscan in basedir/IPR. Change depending on where your .tsv outputs are stored.
@@ -59,18 +58,6 @@ def IPR_list(file):
     IPRlist = [val for sublist in IPRlist for val in sublist]
   return IPRlist
 
-#def fasta_counter(file):
-  # counts the number of proteins in a fasta file
-  # each protein identified by the ">" at the beginning 
-  # essentially counting the number of ">" in each fasta file
-  #with open(file, "rt") as fastaFile:
-    #faaReader = fastaFile.read()
-    #gene_num = {}
-    #for line in faaReader: 
-      #num = len([1 for line in faaReader if line.startswith(">")])
-      #gene_num[str(file)] = num
-  #return gene_num
-
 def IPR_filter(IPRdict, pos_list, neg_list): # Filters ORFS for IPRs matching true (but not false) IPR signatures
   posdict = {}
   filtdict = {}
@@ -97,16 +84,6 @@ def filewriter(filtdict, fileout): # Writes .csv file containing each ORF associ
     for cat in cats:
       data = [cat, filtdict[cat][0]]
       wr.writerow(data)
-
-#def filewriter2(countdict, fileout): # Writes .csv file containing the total number of genes for each genome
-  #cats = countdict.keys()
-  #with open(fileout, "w") as outfile: 
-    #wr = csv.writer(outfile)
-    #headers = ["Genome", "# Genes"]
-    #wr.writerow(headers)
-    #for cat in cats:
-      #data = [cat, countdict[cat][0]]
-      #wr.writerow(data)
 
 def masterfilewriter(masterDictionary, fileout): # Writes .csv file containing a summary of all the HKs and RRs filtered from a directory
   cats = masterDictionary.keys()
@@ -161,16 +138,7 @@ def main(): # sets positive and negative lists and input based on the input file
       masterDictionary[str(filename)] = [len(HKfilt), len(RRfilt)]
 
     # change summary output file name
-    masterfilewriter(masterDictionary, os.path.join(CSVpath,"DeMMO_abundance_counts.csv"))
-  
-  # write file with genome ID and #genes
- # faadict = {}
-  # change directory path
-  #for filename in os.listdir(FAApath):
-    #if filename.endswith(".faa"):
-      #faacount = fasta_counter(filename)
-      #faadict[(filename)] = [faacount]
-    #filewriter2(faadict, os.path.join(CSVpath, "DeMMO_total_gene_counts.csv"))
+    masterfilewriter(masterDictionary, os.path.join(CSVpath,"abundance_counts.csv"))
 
 if __name__ == "__main__":
   main()
