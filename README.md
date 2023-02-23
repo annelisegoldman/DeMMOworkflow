@@ -64,6 +64,8 @@ References several other scripts: **seqtk_run**.
 ### HK1ListTSV.txt, HKFalseListTSV.txt, RR1ListTSV.txt, RRFalseListShortTSV.txt - moved to subdirectory while we organize this
 These files are referenced by **IPR_filter.py** and **sequence_filter.py**. They contain the IPR signatures for HKs and RRs as well as the false positive IPR signatures for each. 
 
+## Open questions
+- Figure 6 - the geochemical data we used to generate this figure found in file "120521_fig4.csv" (and "120621_fig3_4_violins.csv"? not sure we used this figure) currently aren't included in supplementary data. Are we citing Maggie's work here? If the geochemical data isn't published elsewhere, we might need to ask Maggie permission to post 
+- Still need to add plotting scripts for figs 2, 4, and 5
 
-
-
+- Note: I have the input files for figures 1, 3, and 7 in a local copy on my computer (not published to Github yet). I think these are all permutations of data that will be published in the supplement but I want to review it more thoroughly before posting

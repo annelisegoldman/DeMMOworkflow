@@ -17,3 +17,12 @@ extract_seq eventually got combined into extract_sequences with additional code 
 
 ### rename_fasta.py
 Exactly the same as extract_sequences. I think it got copied + renamed to match its function
+
+### 102521_phylum_geochem_HKcount.ipynb
+Generates figures with correlations between geochemical parameters and HK abundance separated by taxa. I don't think these figures are in the paper or supplement
+
+### 220801_violin_stats.ipynb
+Performs statistics calculations on HK distributions in Fig 1. I combined it with "091421_fig1.ipynb" since it was short and uses the same dataset
+
+### SSN_gtdb_phylum_ist.csv
+I can't remember what this was used for... maybe color-coding the SSN?
