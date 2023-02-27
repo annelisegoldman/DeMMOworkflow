@@ -2,11 +2,11 @@ import subprocess
 from pathlib import Path
 import re
 
-# Define base directory, and directories for (1) input files (.faa from Prodigal), (2) .lst files containing protein names, and (3) output file for extracted HK sequences.
-basedir= '/Users/emilyfulk/Downloads/'
-inbox='Prodigal/'
-lstbox='lst_files/'
-outbox='Indv_HKseqs/'
+# Define base directory, and directories for (1) input files (.faa from Prodigal), (2) .lst files containing protein names, and (3) output file for extracted HK sequences. Can use subdirectories of the basedir (as given here), or change these to be hardcoded paths
+basedir= "path/to/basedir"
+inbox= "/inbox"
+lstbox= "/lstbox"
+outbox= "/outbox"
 
 faa_dir = Path(basedir).joinpath(inbox)
 lst_dir = Path(basedir).joinpath(lstbox)
