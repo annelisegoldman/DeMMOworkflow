@@ -13,7 +13,7 @@ The scripts in steps 2-4 are used as post-processing and assumes that genomes ha
 
 ## Identifying & extracting HK and RR sequences
 ### 1. (If needed) Generating amino acid fasta (.faa) files from nucleic acid fasta files using Prodigal (**prodigal_demmo.sh**)
-Converts genome files to predicted proteome files. This project used [Prodigal](https://github.com/hyattpd/Prodigal "Prodigal") to generate predicted protein sequences from metagenome-assembled genomes. prodigal_demmo.sh analyzes batches of nucleic acid files using Prodigal. Run this step before running Interproscan.
+Converts genome files to predicted proteome files. This project used [Prodigal](https://github.com/hyattpd/Prodigal "Prodigal") to generate predicted protein sequences from metagenome-assembled genomes. **prodigal_demmo.sh** analyzes batches of nucleic acid files using Prodigal. Run this step before running Interproscan.
 
 Define the paths to your Prodigal installation and your nucleic acid fasta files, then run **prodigal_demmo.sh**.
 
@@ -29,7 +29,7 @@ Define filepaths to .tsv outputs from Interproscan, lists of HK/RR true and fals
 
 - Inputs
   - .tsv Interproscan outputs (containing a list of predicted protein IPR signatures)
-  - lists of true positive and false positive HK and RR signatures
+  - lists of true positive and false positive HK and RR signatures (found in /HK_RR_IPRsignatures)
 - Outputs
   - abundance_counts.csv: summary file containing the number of HKs and RRs identified in each Interproscan .tsv output 
   - HK_IPR_signatures.csv: For each Interproscan file, lists predicted HK sequence IDs and each IPR signature predicted for that HK sequence. The resulting file contains a dictionary of lists in the form of "Interproscan .tsv filename", {HK sequence ID:[list of IPR signatures associated with that HK]}. 
