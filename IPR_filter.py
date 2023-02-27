@@ -2,33 +2,34 @@
 # List of proteins of interest can be changed with the true and false HK and RR lists. 
 # Can be generalized to just be true and false lists for any proteins, not specifically only HKs and RRs. 
 
+# Be sure you have defined paths for all your input and output files
+
 import csv
 import collections
 import os
 
-basedir = "/base/directory"
+# Define base directory, which should contain the
+basedir = "path/to/base/directory"
 
-# Define path for .tsv outputs from Interproscan in basedir/IPR. Change depending on where your .tsv outputs are stored.
-TSVpath = os.path.join(basedir, "IPR/")
+# Define path for .tsv outputs from Interproscan. Change depending on where your .tsv outputs are stored.
+TSVpath = "path/to/tsv"
 
 # Define path for where you want the .csv outputs containing HK and RR counts to be stored
-CSVpath = os.path.join(basedir, "count_summaries/")
+CSVpath = "/Users/emilyfulk/DeMMOworkflow/test_data"
 
-
-# Input file paths for InterProScan results (this is just the first file in the working directory), 
-# true and false HK and RR lists. 
-# IPRresults = os.path.join(TSVpath,"FAA_ID230.SLURM_JOB_ID2544891.tsv")
-
-for p in [TSVpath, CSVpath, IPRresults]:
-  if not os.path.exists(p): 
-    print("Path does not exist", p)
-    exit()
+# Define path to first file in TSVpath (this is just the first file in the working directory - given as an example here, although your file name will be different),
+IPRresults = os.path.join(TSVpath,"FAA_ID2773858020.SLURM_JOB_ID2470156.tsv")
 
 # Define path to HK and RR true and false positive lists
 HKtrue_list = os.path.join(basedir, "HK_RR_IPRsignatures/HK1ListTSV.txt")
 HKfalse_list = os.path.join(basedir, "HK_RR_IPRsignatures/HKFalseListTSV.txt")
 RRtrue_list = os.path.join(basedir, "HK_RR_IPRsignatures/RR1ListTSV.txt")
 RRfalse_list = os.path.join(basedir, "HK_RR_IPRsignatures/RRFalseListShortTSV.txt")
+
+for p in [TSVpath, CSVpath, IPRresults]:
+  if not os.path.exists(p):
+    print("Path does not exist", p)
+    exit()
 
 def IPR_results(file):
   #Create dictionary from InterProScan results with ORFs as keys and IPR list as values
@@ -114,7 +115,7 @@ def main(): # sets positive and negative lists and input based on the input file
       HKfilt = IPR_filter(IPRdict, HKpos, HKneg)
       filtdict[(filename)] = [HKfilt]
 
-    filewriter(filtdict, os.path.join(CSVpath, "DeMMO_HKabundance_counts.csv"))
+    filewriter(filtdict, os.path.join(CSVpath, "HK_IPR_signatures.csv"))
 
   # write results for RRs
   filtdict = {}
@@ -125,7 +126,7 @@ def main(): # sets positive and negative lists and input based on the input file
       RRfilt = IPR_filter(IPRdict, RRpos, RRneg)
       filtdict[(filename)] = [RRfilt]
 
-    filewriter(filtdict, os.path.join(CSVpath, "DeMMO_RRabundance_counts.csv"))
+    filewriter(filtdict, os.path.join(CSVpath, "RR_IPR_signatures.csv"))
     
   # write summary file with genome ID, #HKs, and #RRs
   masterDictionary = {}
@@ -138,7 +139,7 @@ def main(): # sets positive and negative lists and input based on the input file
       masterDictionary[str(filename)] = [len(HKfilt), len(RRfilt)]
 
     # change summary output file name
-    masterfilewriter(masterDictionary, os.path.join(CSVpath,"abundance_counts.csv"))
+    masterfilewriter(masterDictionary, os.path.join(CSVpath,"HK_RR_abundance_counts.csv"))
 
 if __name__ == "__main__":
   main()

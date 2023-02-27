@@ -26,3 +26,6 @@ Performs statistics calculations on HK distributions in Fig 1. I combined it wit
 
 ### SSN_gtdb_phylum_ist.csv
 I can't remember what this was used for... maybe color-coding the SSN?
+
+### count_fastas.py
+This script counts the number of proteins in each .faa file from Prodigal

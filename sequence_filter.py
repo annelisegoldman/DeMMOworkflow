@@ -10,21 +10,18 @@
 import csv
 import collections
 import os
-import re
-import sys
-from os import path
 import glob
 
 # Set directory paths, including the base directory, the directory where the .tsv InterProScan outputs 
 # can be found, and the directory where you would like to put the .csv HK sequence list outputs.
-basedir = "/path/to/basedirectory/"
-TSVpath = os.path.join(basedir, "IPR/")
-seqpath = os.path.join(basedir, "indv_HKseq_names/")
+basedir = "/Users/emilyfulk/DeMMOworkflow"
+TSVpath = "/Users/emilyfulk/DeMMOworkflow/test_data/tsv_outputs"
+seqpath = "/Users/emilyfulk/DeMMOworkflow/test_data"
 
 # Set paths for locations of HK true and false lists. If desired, can also run this script to pull out RR
 # sequence names, so RR true and false lists are also included but commented out for now.
-HKtrue_list = os.path.join(basedir, "DeMMOworkflow/HK1ListTSV.txt")
-HKfalse_list = os.path.join(basedir, "DeMMOworkflow/HKFalseListTSV.txt")
+HKtrue_list = os.path.join(basedir, "HK_RR_IPRsignatures/HK1ListTSV.txt")
+HKfalse_list = os.path.join(basedir, "HK_RR_IPRsignatures/HKFalseListTSV.txt")
 #RRtrue_list = os.path.join(basedir, "DeMMOworkflow/RR1ListTSV.txt")
 #RRfalse_list = os.path.join(basedir, "DeMMOworkflow/RRFalseListShortTSV.txt")
 

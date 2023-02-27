@@ -3,7 +3,6 @@ venv/
 # ignore certain directories until they are clean/unpublished data is removed
 data/
 figures/
-plotting_scripts/
-
+test_data/
 
 
